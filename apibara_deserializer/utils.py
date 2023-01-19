@@ -10,7 +10,6 @@ from starknet_py.net.client_models import GatewayBlock
 from starknet_py.net.gateway_client import GatewayClient
 
 
-# TODO: check https://docs.openzeppelin.com/contracts-cairo/0.3.1/utilities
 def str_to_felt(text: str) -> int:
     if len(text) > 31:
         raise ValueError(
@@ -40,28 +39,6 @@ def int_to_uint256_dict(a: int) -> dict[str, int]:
 def int_to_bytes(a: int) -> bytes:
     length = (a.bit_length() + 7) // 8
     return a.to_bytes(length, byteorder="big")
-
-
-# def uint256_dict_to_int(a: dict[str, int]) -> int:
-#     """Takes uint256-ish dict value, returns int value."""
-#     return uint256_to_int((a["low"], a["high"]))
-
-
-# def uint256_to_int(uint: tuple) -> int:
-#     """Takes in uint256-ish tuple, returns value."""
-#     return uint[0] + (uint[1] << 128)
-
-
-# def bytes_to_int(a: bytes) -> int:
-#     return int.from_bytes(a, "big")
-
-
-# def bytes_to_str(a: bytes) -> str:
-#     return a.hex()
-
-
-# def str_to_bytes(a: str) -> bytes:
-#     return bytes.fromhex(a)
 
 
 def async_cached(cache, key=keys.hashkey):

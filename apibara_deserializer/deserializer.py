@@ -1,11 +1,11 @@
 import asyncio
 from datetime import datetime
-from typing import Any, Callable, Type, Union, Optional
+from typing import Any, Callable, Optional, Type, Union
 
 from apibara import Info
 from apibara.model import BlockHeader, StarkNetEvent
-from starknet_py.utils.data_transformer.data_transformer import CairoSerializer
 from starknet_py.net.gateway_client import GatewayClient
+from starknet_py.utils.data_transformer.data_transformer import CairoSerializer
 
 from .utils import (
     felt_to_str,
@@ -63,7 +63,7 @@ ALL_DESERIALIZERS: dict[Type, Serializer] = {
 }
 
 
-# pylint: disable=too-many-locals
+# pylint: disable=too-many-locals, too-many-arguments, too-many-branches
 async def deserialize_apibara_event(
     info: Info,
     block: BlockHeader,
