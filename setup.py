@@ -16,5 +16,5 @@ setup(
     author_email="web3@quadratic-labs.com",
     url="https://quadratic-labs.com",
     packages=find_packages(exclude=("tests", "docs")),
-    install_requires=["apibara==0.5.16"],
+    install_requires=["apibara==0.6.2"],
 )

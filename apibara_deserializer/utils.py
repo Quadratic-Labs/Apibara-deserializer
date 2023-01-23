@@ -3,9 +3,9 @@ from datetime import datetime, timezone
 from functools import lru_cache, wraps
 from typing import Callable, Iterable, Union
 
-from apibara.model import BlockHeader
+from apibara.starknet.proto.starknet_pb2 import Block
 from cachetools import LRUCache, keys
-from starknet_py.contract import Contract
+from starknet_py.contract import Contract, ContractFunction
 from starknet_py.net.client_models import GatewayBlock
 from starknet_py.net.gateway_client import GatewayClient
 
@@ -80,23 +80,23 @@ async def get_block(block_number: int, client: GatewayClient) -> GatewayBlock:
     return await client.get_block(block_number=block_number)
 
 
-def get_block_datetime_utc(block: Union[GatewayBlock, BlockHeader]) -> datetime:
+def get_block_datetime_utc(block: Union[GatewayBlock, Block]) -> datetime:
     if isinstance(block, GatewayBlock):
         return datetime.fromtimestamp(block.timestamp, timezone.utc)
 
-    if isinstance(block, BlockHeader):
-        return block.timestamp.replace(tzinfo=timezone.utc)
+    if isinstance(block, Block):
+        return block.header.timestamp.ToDatetime(tzinfo=timezone.utc)
 
     raise ValueError(
-        f"block should be either GatewayBlock or BlockHeader, got {block} of type"
-        f" {type(block)}"
+        "block should be either starknet.py's GatewayBlock or apibara's Block, got"
+        f" {block} of type {type(block)}"
     )
 
 
 @lru_cache(maxsize=128)
 def get_contract_events(contract: Contract) -> dict:
     return {
-        element["name"]: element
+        ContractFunction.get_selector(element["name"]): element
         for element in contract.data.abi
         if element["type"] == "event"
     }
